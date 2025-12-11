@@ -1,65 +1,62 @@
-# AWS Service Screener Well-Architected Summarizer
+# AWS Service Screener Well-Architected 요약 도구
+AWS [Service Screener](https://github.com/aws-samples/service-screener-v2) 출력 데이터를 분석하여 Well-Architected Framework 기반의 종합 분석 리포트를 자동 생성하는 도구입니다.
 
-A tool to analyze AWS [Service Screener](https://github.com/aws-samples/service-screener-v2) output data and generate comprehensive Well-Architected Framework analysis reports.
+## 개요
+AWS Service Screener Well-Architected Summarizer(wa-ss-summarizer)는 Amazon Q CLI를 활용하여 Service Screener 데이터를 처리하고,
+AWS Well-Architected Framework 6개 필러에 기반한 상세 HTML 분석 리포트를 생성하는 커맨드라인 도구입니다.
 
-## Overview
-
-The AWS Service Screener Well-Architected Summarizer (wa-ss-summarizer) is a command-line tool that leverages Amazon Q CLI to process Service Screener data and produce detailed HTML reports highlighting security issues, performance optimization opportunities, and actionable recommendations based on the AWS Well-Architected Framework's six pillars.
-
-This tool serves as a wrapper around Amazon Q CLI, providing a streamlined way to analyze Service Screener results and generate professional, actionable reports that can be shared with stakeholders.
+이 도구는 Amazon Q CLI를 감싸는(wrapper) 형태로 동작하며, Service Screener 분석 결과를 더욱 읽기 쉽고 실무적으로 활용 가능한 보고서 형태로 만들어 줍니다.
 
 ## Features
 
-- **Comprehensive Analysis**: Analyzes Service Screener data across all six Well-Architected Framework pillars
-- **Priority-Based Recommendations**: Provides actionable recommendations categorized by priority (High, Medium, Low)
-- **Implementation Roadmap**: Includes timeline and steps for implementing recommendations
-- **Cost Impact Analysis**: Estimates the financial impact of implementing recommendations
-- **Visual Reporting**: Generates visually appealing HTML reports with charts and progress indicators
-- **AWS CLI Commands**: Includes specific AWS CLI commands for implementing recommendations
-- **Service Focus**: Analyzes the top 5 services with the most findings, plus IAM findings
+- **종합 분석**: Well-Architected Framework 6개 필러 전반에 걸쳐 Service Screener 결과 분석
+- **우선순위 기반 권장사항**: High / Medium / Low 로 분류된 개선 권고 제공
+- **구현 로드맵 제공**: 권장사항 실행을 위한 단계별 계획 포함
+- **비용 영향 분석**: 권장사항 적용 시 예상되는 비용 영향 추정
+- **시각화된 레포트**: 차트(Charts), 진행률 표시 등 비주얼 요소 포함한 HTML 리포트 생성
+- **AWS CLI 명령어 포함**: 권고된 개선 조치를 수행하기 위한 AWS CLI 명령 자동 포함
+- **서비스 중심 분석**: 가장 많은 이슈를 가진 상위 5개 AWS 서비스 + IAM 결과 포함
 
-## Prerequisites
+## 사전 요구사항
+- AWS CLI가 적절한 Credential과 함께 설정되어 있어야 함
+- Amazon Q CLI 설치 및 구성 완료
+- AWS Service Screener 결과 데이터 준비 필요
 
-- AWS CLI configured with appropriate credentials
-- Amazon Q CLI installed and configured
-- AWS Service Screener output data
+## 설치 방법
 
-## Installation
-
-1. Clone the repository:
+1. repository clone:
    ```bash
-   git clone https://github.com/carlos-aws/wa-ss-summarizer.git
-   cd wa-ss-summarizer
+   git clone https://github.com/sujeong-jang-creator/AWS-Summarizer
+   cd AWS-Summarizer
    ```
 
-2. Make the script executable:
+2. 스크립트 실행권한 부여:
    ```bash
    chmod +x run_wa_summarizer.sh
    ```
 
-## Usage
-
-### Basic Usage
+## 사용 방법
+### 기본 사용 방법
 
 ```bash
 ./run_wa_summarizer.sh -d /path/to/service-screener-results
 ```
 
-### Options
+### 옵션
 
-- `-d, --dir DIRECTORY`: Service Screener results directory (required)
-- `-o, --output DIRECTORY`: Output directory for reports (default: ./output)
-- `-h, --help`: Display help message
+- `-d, --dir DIRECTORY`: 분석할 Service Screener 결과 디렉토리 (필수)
+- `-o, --output DIRECTORY`: 보고서 출력 디렉토리 (기본값: ./output)
+- `-h, --help`: 도움말 출력
 
-### Example
+### 예시
 
 ```bash
 ./run_wa_summarizer.sh -d /path/to/service-screener-results -o ./my-reports
 ```
 
-## Service Screener Data Structure
+## Service Screener 데이터 구조
 
-The tool expects Service Screener data in the following structure:
+도구는 아래와 같은 구조의 Screener 데이터 디렉토리를 기대합니다:
 
 ```
 <service_screener_dir>/
@@ -75,43 +72,30 @@ The tool expects Service Screener data in the following structure:
     └── (CSS, images, and other resources)
 ```
 
-## Generated Report
+## 생성되는 보고서
 
-The tool generates an HTML report with the following sections:
+HTML 리포트는 다음과 같은 섹션을 포함합니다:
 
-1. **Summary Dashboard**: Key metrics including issues by severity, pillar distribution, and expected improvement impact
-2. **Well-Architected Framework 6 Pillars Analysis**: Analysis of findings for each pillar
-3. **Service Screener Results Analysis**: Detailed analysis of the top 5 services with the most findings, plus IAM findings
-4. **Priority-based Improvement Recommendations**: Actionable recommendations categorized by priority
-5. **Implementation Roadmap**: Timeline and steps for implementing the recommendations
-6. **Cost Impact Analysis**: Financial impact of implementing the recommendations
-7. **Conclusion and Recommendations**: Summary of key findings and recommendations
+1. **요약 대시보드**: 심각도(Severity)별 이슈 요약, 필러별 이슈 분포, 개선 효과 예상치
+2. **Well-Architected Framework 6개 필러 분석**
+3. **Service Screener 결과 분석**: 가장 많은 이슈를 가진 상위 5개 서비스, IAM 관련 이슈 별도 분석 포함
+4. **우선순위 기반 개선 권장사항**
+5. **구현 로드맵**: 개선 작업 계획과 일정 예시 제공
+6. **비용 영향 분석**
+7. **결론 및 종합 권고s**
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Amazon Q CLI not found**:
-   - Ensure Amazon Q CLI is installed and in your PATH
-   - Run `q --version` to verify installation
+1. **AWS 자격증명 미구성**:
+   - `aws configure`로 설정
+   - `aws sts get-caller-identity`로 인증 확인
 
-2. **AWS credentials not configured**:
-   - Run `aws configure` to set up your AWS credentials
-   - Verify with `aws sts get-caller-identity`
-
-3. **Invalid Service Screener data**:
-   - Ensure the Service Screener directory contains the expected files and structure
-   - Check that at least one account directory exists with index.html and CPFindings.html files
+2. **잘못된 Service Screener 데이터**:
+   - 예상된 디렉토리와 파일이 모두 존재하는지 확인
+   - 최소한 index.html과 CPFindings.html 이 있어야 분석 가능
 
 ## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Acknowledgments
-
-- AWS Service Screener team for providing the foundation for this tool
-- Amazon Q for powering the analysis capabilities
+MIT License
+(LICENSE 파일 참조)
